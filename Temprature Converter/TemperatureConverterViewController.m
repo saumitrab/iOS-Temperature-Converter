@@ -10,10 +10,9 @@
 
 @interface TemperatureConverterViewController ()
 
-- (void) onConvertClicked;
+- (void) closeKeyboardAndConvertTemperature;
 
 @end
-int ctof;
 
 @implementation TemperatureConverterViewController
 
@@ -29,14 +28,13 @@ int ctof;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.tvCelsius.delegate = self;
+    self.tvFahrenheit.delegate = self;
     
     self.title = @"Temprature";
     
-    [self.btnConvert addTarget:self action:@selector(convert) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.tvFahrenheit addTarget:self action:@selector(selectSourceWithTf:) forControlEvents:UIControlEventEditingChanged];
-    [self.tvCelsius addTarget:self action:@selector(selectSourceWithTf:) forControlEvents:UIControlEventEditingChanged];
+    [self.btnConvert addTarget:self action:@selector(closeKeyboardAndConvertTemperature) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)didReceiveMemoryWarning
@@ -45,30 +43,19 @@ int ctof;
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - public functions
 
-- (void) closeKeyboard {
+- (void) closeKeyboardAndConvertTemperature {
     [self.view endEditing:YES];
-    [self convert];
-}
-
-- (void) onConvertClicked {
-    [self closeKeyboard];
-}
-
-# pragma mark - private functions 
-
-- (void) convert {
-        
-    if ( 1 == ctof ) {
+    
+    if ( self.activeTextField.tag == self.tvCelsius.tag ) {
         
         if ( self.tvCelsius.text.length > 0 ) {
             float celsius = [self.tvCelsius.text floatValue];
             float fahrenheit = (celsius * 9 / 5) + 32;
             self.tvFahrenheit.text = [NSString stringWithFormat:@"%0.2f", fahrenheit];
         }
-    } else if ( 0 == ctof) {
+    } else if ( self.activeTextField.tag == self.tvFahrenheit.tag ) {
         
         if ( self.tvFahrenheit.text.length > 0 ) {
             float fahrenheit = [self.tvFahrenheit.text floatValue];
@@ -78,12 +65,10 @@ int ctof;
     }
 }
 
-- (void) selectSourceWithTf:(UITextField *)Tf {
-    if ( Tf.tag == self.tvCelsius.tag ) {
-        ctof = 1;
-    } else {
-        ctof = 0;
-    }
+# pragma mark - UITextField Delegate methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.activeTextField = textField;
 }
 
 @end
