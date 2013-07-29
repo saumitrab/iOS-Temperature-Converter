@@ -10,6 +10,8 @@
 
 @interface TemperatureConverterViewController ()
 
+@property (nonatomic, weak) UITextField *activeTextField;
+
 - (void) closeKeyboardAndConvertTemperature;
 
 @end
@@ -32,7 +34,7 @@
     self.tvCelsius.delegate = self;
     self.tvFahrenheit.delegate = self;
     
-    self.title = @"Temprature";
+    self.title = @"Temperature";
     
     [self.btnConvert addTarget:self action:@selector(closeKeyboardAndConvertTemperature) forControlEvents:UIControlEventTouchUpInside];
 }

@@ -8,10 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface TemperatureConverterViewController : UIViewController <UITextFieldDelegate>
-
-@property (nonatomic, weak) UITextField *activeTextField;
 
 @property (nonatomic, strong) IBOutlet UITextField *tvFahrenheit;
 @property (nonatomic, strong) IBOutlet UITextField *tvCelsius;
